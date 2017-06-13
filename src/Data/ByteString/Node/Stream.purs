@@ -28,6 +28,7 @@ import Node.Stream
   , isPaused, pipe, readString, writeString, cork, uncork, setDefaultEncoding, end)
 import Node.Stream as S
 
+
 onData
   :: forall w eff
    . S.Readable w (exception :: EXCEPTION | eff)
@@ -45,8 +46,8 @@ onDataEither r cb = S.onDataEither r (cb <<< map NB.fromBuffer)
 read
   :: forall w eff
    . S.Readable w (exception :: EXCEPTION | eff)
-   -> Maybe Int
-   -> Eff (exception :: EXCEPTION | eff) (Maybe ByteString)
+  -> Maybe Int
+  -> Eff (exception :: EXCEPTION | eff) (Maybe ByteString)
 read s = map (map NB.fromBuffer) <<< S.read s
 
 readEither
