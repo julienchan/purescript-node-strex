@@ -9,7 +9,7 @@
   "dependencies": {
     "purescript-node-streams": "^3.1.0",
     "purescript-node-fs": "^4.0.0",
-    "purescript-strex": "git://github.com/julienchan/purescript-strex.git#e9d424d",
+    "purescript-strex": "git://github.com/julienchan/purescript-strex.git#d382508add7b38611514a2e7ac5f46c337efea32",
     "purescript-refs": "^3.0.0"
   },
   "devDependencies": {

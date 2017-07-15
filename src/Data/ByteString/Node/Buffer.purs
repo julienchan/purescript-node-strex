@@ -7,9 +7,9 @@ import Prelude
 
 import Control.Monad.Eff (Eff)
 
-import Data.ArrayBuffer.Types (ArrayBuffer, Uint8Array)
-import Data.ArrayBuffer.TypedArray (Ptr(..), arrayBuffer, newPtr, length)
+import Data.ArrayBuffer.Types (ArrayBuffer, ArrayView, Uint8Array)
 import Data.ByteString (ByteString(..))
+import Data.ByteString.Internal (Ptr(..), newPtr )
 
 import Node.Buffer (Buffer)
 import Unsafe.Coerce (unsafeCoerce)
@@ -27,6 +27,12 @@ toBuffer (ByteString (Ptr a av) n l) = _toBuffer (a + n) l (arrayBuffer av)
 fromBuffer :: Buffer -> ByteString
 fromBuffer buf =
   let uint8 = bufferToUint8Array buf
-  in ByteString (newPtr uint8) 0 (length uint8)
+  in ByteString (newPtr uint8) 0 ((typedArraytoRecord uint8).length)
 
 foreign import _toBuffer :: forall r. Int -> Int -> ArrayBuffer -> Eff r Buffer
+
+arrayBuffer :: Uint8Array -> ArrayBuffer
+arrayBuffer = _.buffer <<< typedArraytoRecord
+
+typedArraytoRecord :: forall a. ArrayView a -> { buffer :: ArrayBuffer, length :: Int }
+typedArraytoRecord = unsafeCoerce
